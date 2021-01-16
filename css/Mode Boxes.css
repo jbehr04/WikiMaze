@@ -1,0 +1,73 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.flexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.mode{
+    font-family: "roboto", sans-serif;
+    color: black;
+    border-radius: 2vw;
+    width: 22.5vw;
+    height: 85.5vh;
+    float: left;
+}
+.flx-text{
+    display: flex;
+    flex-direction: column;
+    width: 22.5vw;
+    height: 85.5vh;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.mode-classic{
+    background: #005dff;
+}
+.mode-classic:hover{
+    background: #014cc4;
+}
+.mode-5{
+    background: #f14f4f;
+}
+.mode-5:hover{
+    background: #cb3c3c;
+}
+.mode-timed{
+    background: #2cc145;
+}
+.mode-timed:hover{
+    background: #28a53f;
+}
+.mode-battle{
+    background: #f5fb3c;
+}
+.mode-battle:hover{
+    background: #dce22d;
+}
+.margin{
+    width: 2vw;
+}
+.txt-center{
+    font-weight: bold;
+    font-size: 3.3em;
+}
+.txt-info{
+    bottom: 1.2vh;
+    padding-left: 1vh;
+    font-size: .7em;
+    margin-left: 0;
+}
+.info{
+    position: absolute;
+    bottom: .5vh;
+    margin-left: 1vw;
+    display: inline-block;
+    width: 22.5vw;
+}
+#info-logo{
+    width: 2.2em;
+}

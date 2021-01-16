@@ -1,0 +1,70 @@
+#logo{
+    width: 7em;
+}
+.navbar{
+    display: block;
+    margin: 8px;
+    height: 8vh;
+}
+.links {
+    padding: .5vh .5vw;
+    width: 30em;
+    display: inline-block;
+    vertical-align: bottom;
+    padding-bottom: 1vh;
+}
+.nav-container{
+    padding-left: .9em;
+    padding-right: 1.2em;
+    vertical-align: top;
+    display: inline-block;
+}
+.nav-links{
+    color: black;
+    text-decoration: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+.WikiMaze-logo{
+    border-right: 2px solid #b7b7b7;
+    width: 8em;
+    display: inline-block;
+    padding: .5vw .5vh;
+}
+.btn-space{
+    width: .5em;
+    height: 1px;
+    display: inline-block;
+    float: right;
+}
+.login{
+    font-family: "acumin-pro", sans-serif;
+    font-weight: 700;
+    font-size: .7em;
+    padding: 1em 2em;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background: none;
+    outline: none;
+    float: right;
+}
+.login:hover{
+    border: 2px solid #ababab;
+    background: #ababab;
+}
+.signup{
+    font-family: "acumin-pro", sans-serif;
+    font-weight: 700;
+    font-size: .7em;
+    padding: 1em 1.6em;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background: none;
+    outline: none;
+    float: right;
+}
+.signup:hover{
+    border: 2px solid #ababab;
+    background: #ababab;
+}
