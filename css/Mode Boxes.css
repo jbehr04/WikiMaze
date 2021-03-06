@@ -56,18 +56,56 @@
     font-size: 3.3em;
 }
 .txt-info{
-    bottom: 1.2vh;
-    padding-left: 1vh;
+    position: absolute;
+    display: inline-block;
+    bottom: .8vh;
+    padding-left: .7vh;
     font-size: .7em;
-    margin-left: 0;
+    margin-left: 1vw;
+    width: 17vw;
 }
 .info{
     position: absolute;
-    bottom: .5vh;
+    bottom: .8vh;
     margin-left: 1vw;
     display: inline-block;
     width: 22.5vw;
 }
 #info-logo{
+    display: inline-block;
     width: 2.2em;
+    transition: all 0.3s ease-in-out 0s;
+}
+#info-logo:hover{
+    cursor: default;
+    transform: rotate(360deg);
+    transition: all 0.3s ease-in-out 0s;
+}
+#txt-1{
+    opacity: 0;
+    transition: .3s ease;
+}
+#txt-2{
+    opacity: 0;
+    transition: .3s ease;
+}
+#txt-3{
+    opacity: 0;
+    transition: .3s ease;
+}
+#txt-4{
+    opacity: 0;
+    transition: .3s ease;
+}
+#info-logo:hover ~#txt-1{
+    opacity: 1;
+}
+#info-logo:hover ~#txt-2{
+    opacity: 1;
+}
+#info-logo:hover ~#txt-3{
+    opacity: 1;
+}
+#info-logo:hover ~#txt-4{
+    opacity: 1;
 }
