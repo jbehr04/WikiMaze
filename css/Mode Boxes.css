@@ -25,10 +25,10 @@
     position: relative;
 }
 .mode-classic{
-    background: #005dff;
+    background: #3881fd;
 }
 .mode-classic:hover{
-    background: #014cc4;
+    background: #136bfc;
 }
 .mode-5{
     background: #f14f4f;
