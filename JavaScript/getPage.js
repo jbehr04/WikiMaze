@@ -2,6 +2,10 @@ var jQueryScript = document.createElement('script');
 jQueryScript.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js";
 document.head.appendChild(jQueryScript);
 
+let baseTag = document.createElement('base');
+baseTag.href = "//en.wikipedia.org";
+baseTag.target = "_blank";
+document.head.appendChild(baseTag);
 
 let randPage = 'Main Page';
 let apiEndpoint = "https://en.wikipedia.org/w/api.php";
@@ -12,7 +16,10 @@ let rand = function(response) {
 }
 
 let parser = function(response) {
+    console.log(response);
     let htmlString = response.parse.text['*'];
+    let headhtml = response.parse.headhtml['*'];
+    $("head").append($($.parseHTML(headhtml.trim())));
     $("body").append($($.parseHTML(htmlString.trim())));
 }
 
@@ -27,12 +34,13 @@ function loadScript(url) {
 }
 
 loadScript(apiEndpoint + "?" + params + "&callback=rand")
-    .then(function(script) {
+    .then(function(script) {//wait for first script to load
         let url = "https://en.wikipedia.org/w/api.php?" +
             new URLSearchParams({
                 action: "parse",
                 page: randPage,
                 format: "json",
+                prop: "text|headhtml",
             });
         return loadScript(url + '&callback=parser')
     });
