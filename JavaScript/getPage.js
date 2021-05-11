@@ -79,11 +79,11 @@ function prune(html) { //TODO: see top list
         try {
             if(children[h].outerHTML.indexOf('<h2>') === 0) {
                 console.log(children[h].childNodes[0].id);
-                if(children[h].childNodes[0].id === 'See_also') delete children[h];
-                if(children[h].childNodes[0].id === 'Notes') delete children[h];
-                if(children[h].childNodes[0].id === 'References') delete children[h];//TODO: figure  out how to deleteeeeeeeee
-                if(children[h].childNodes[0].id === 'Further_reading') delete children[h];
-                if(children[h].childNodes[0].id === 'External_links') delete children[h];
+                if(children[h].childNodes[0].id === 'See_also') children.pop(h);
+                if(children[h].childNodes[0].id === 'Notes') children.pop(h);
+                if(children[h].childNodes[0].id === 'References') children.pop(h);//TODO: figure  out how to deleteeeeeeeee
+                if(children[h].childNodes[0].id === 'Further_reading') children.pop(h);
+                if(children[h].childNodes[0].id === 'External_links') children.pop(h);
                 console.log(children[h].childNodes[0].id);
             }
         } catch {}
