@@ -70,25 +70,16 @@ function isShort(html) {
 }
 
 function prune(html) { //TODO: see top list
+    let count = 0;
     html.find("table[class*='ambox']").remove();
     html.find("div[class*='asbox']").remove();
     html.find("span[class*='editsection']").remove();
     html.find("span[class*='toctogglespan']").remove();
-    let children = html[0].childNodes
-    for(let h = 0; h < children.length; h++) {
-        try {
-            if(children[h].outerHTML.indexOf('<h2>') === 0) {
-                console.log(children[h].childNodes[0].id);
-                if(children[h].childNodes[0].id === 'See_also') children.pop(h);
-                if(children[h].childNodes[0].id === 'Notes') children.pop(h);
-                if(children[h].childNodes[0].id === 'References') children.pop(h);//TODO: figure  out how to deleteeeeeeeee
-                if(children[h].childNodes[0].id === 'Further_reading') children.pop(h);
-                if(children[h].childNodes[0].id === 'External_links') children.pop(h);
-                console.log(children[h].childNodes[0].id);
-            }
-        } catch {}
-
-    }
+    html.find('h2').children().find('#See_also').nextAll().each(() => console.log(++count));
+    html.find('h2').children().find('#Notes').nextAll().each(() => console.log(++count));
+    html.find('h2').children().find('#References').nextAll().each(() => console.log(++count));
+    html.find('h2').children().find('#Further_reading').nextAll().each(() => console.log(++count));
+    html.find('h2').children().find('#External_links').nextAll().each(() => console.log(++count));
     return html;
 }
 
