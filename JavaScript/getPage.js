@@ -1,7 +1,5 @@
 /**TODO:
  *      >Fix contents table
- *      >Remove tone tag
- *      >Remove edit tags
  *      >Remove bottom links:
  *          -See also
  *          -External Links
@@ -15,14 +13,9 @@ var jQueryScript = document.createElement('script');
 jQueryScript.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js";
 document.head.appendChild(jQueryScript);
 
-let baseTag = document.createElement('base');
-baseTag.href = "//en.wikipedia.org";
-baseTag.target = "_blank";
-document.head.appendChild(baseTag);
-
 let styles = document.createElement('link');
 styles.rel = 'stylesheet';
-styles.href = '/w/load.php?lang=en&modules=ext.cite.styles%7Cext.discussionTools.init.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Coojs-ui.styles.icons-moderation%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector';
+styles.href = '//en.wikipedia.org/w/load.php?lang=en&modules=ext.cite.styles%7Cext.discussionTools.init.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Coojs-ui.styles.icons-moderation%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector';
 document.head.appendChild(styles);
 
 let randPage = 'Main Page';
@@ -39,7 +32,7 @@ let rand = function(response) {
 
 let parser = function(response) {
     let htmlString = $($.parseHTML(response.parse.text['*']));
-    let headhtml = response.parse.headhtml['*'];
+    let headhtml = $($.parseHTML(based(response.parse.headhtml['*'])));
     htmlString = prune(htmlString);
     if(isShort(htmlString)) {
         randPage = randResp[randIndex].title;
@@ -56,26 +49,46 @@ let parser = function(response) {
     } else {
         $("body").append(`<h1 id="firstHeading" class="firstHeading">${randPage}</h1>`);
         $("body").append('<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>');
-        $("head").append($($.parseHTML(headhtml.trim())));
-        document.querySelector('link[href="/static/favicon/wikipedia.ico"]').remove();
-        $("body").append($($.parseHTML(htmlString.trim())));
+        $("head").append(headhtml);
+        $("body").append(htmlString);
     }
 }
 
-function isShort(html) { //TODO: Make this work with html object
-    let count = 0;
-    let str = html;
-    while(str.indexOf('<a href="/wiki/') !== str.lastIndexOf('<a href="/wiki/')) {
-        count++;
-        let sub = str.substring((str.indexOf('<a href="/wiki/')));
-        str = sub.substring(sub.indexOf('</a>') + 4);
+function based(str) {
+    while(str.indexOf('"/w/') !== -1) {
+        let str1 = str.substring(0, str.indexOf('"/w/') + 1);
+        let str2 = str.substring(str.indexOf('"/w/') + 1);
+        str = str1 + "//en.wikipedia.org" + str2;
     }
+    return str;
+}
+
+function isShort(html) {
+    let count = 0;
+    html.find("a[href*='/wiki/']").each(function (){count++;});
     return count < 12;
 }
 
 function prune(html) { //TODO: see top list
-    html.filter(':contains("ambox")').remove();
-    html.filter(':contains("asbox")').remove();
+    html.find("table[class*='ambox']").remove();
+    html.find("div[class*='asbox']").remove();
+    html.find("span[class*='editsection']").remove();
+    html.find("span[class*='toctogglespan']").remove();
+    let children = html[0].childNodes
+    for(let h = 0; h < children.length; h++) {
+        try {
+            if(children[h].outerHTML.indexOf('<h2>') === 0) {
+                console.log(children[h].childNodes[0].id);
+                if(children[h].childNodes[0].id === 'See_also') delete children[h];
+                if(children[h].childNodes[0].id === 'Notes') delete children[h];
+                if(children[h].childNodes[0].id === 'References') delete children[h];//TODO: figure  out how to deleteeeeeeeee
+                if(children[h].childNodes[0].id === 'Further_reading') delete children[h];
+                if(children[h].childNodes[0].id === 'External_links') delete children[h];
+                console.log(children[h].childNodes[0].id);
+            }
+        } catch {}
+
+    }
     return html;
 }
 
