@@ -89,7 +89,7 @@ function listeners() {
             $(this).unbind('click').click();
         }
     });
-    $('a[href*="/wiki/"]').click(function(e) {//TODO: make preventDefault work
+    $('a[href*="/wiki/"]').click(function(e) {
         e.preventDefault();
         let page = $(this).attr('href').substring(6);
         let url = "https://en.wikipedia.org/w/api.php?" +
