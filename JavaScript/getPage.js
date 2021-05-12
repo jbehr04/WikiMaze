@@ -1,18 +1,3 @@
-/**TODO:
- *      >Fix contents table
- *      >Remove bottom links:
- *          -See also
- *          -External Links
- *          -References
- *          -Other Sources
- *          -Appendices
- *      >Link changing
-**/
-
-var jQueryScript = document.createElement('script');
-jQueryScript.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js";
-document.head.appendChild(jQueryScript);
-
 let styles = document.createElement('link');
 styles.rel = 'stylesheet';
 styles.href = '//en.wikipedia.org/w/load.php?lang=en&modules=ext.cite.styles%7Cext.discussionTools.init.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediaBadges%7Coojs-ui.styles.icons-moderation%7Cskins.vector.styles.legacy%7Cwikibase.client.init&only=styles&skin=vector';
@@ -23,6 +8,7 @@ let apiEndpoint = "https://en.wikipedia.org/w/api.php";
 let params = "action=query&list=random&rnlimit=10&rnnamespace=0&format=json";
 let randResp = ['penis muncher', 'beans', 'lmao'];
 let randIndex = 0;
+let isFirst = true;
 
 let rand = function(response) {
     randPage = response.query.random[0].title;
@@ -34,7 +20,7 @@ let parser = function(response) {
     let htmlString = $($.parseHTML(response.parse.text['*']));
     let headhtml = $($.parseHTML(based(response.parse.headhtml['*'])));
     htmlString = prune(htmlString);
-    if(isShort(htmlString)) {
+    if(isShort(htmlString) && isFirst) {
         randPage = randResp[randIndex].title;
         console.log(randPage);
         randIndex++;
@@ -47,10 +33,12 @@ let parser = function(response) {
             });
         loadScript(url + "&callback=parser");
     } else {
-        $("body").append(`<h1 id="firstHeading" class="firstHeading">${randPage}</h1>`);
+        isFirst = false;
+        $("body").append(`<h1 id="firstHeading" class="firstHeading">${response.parse.title}</h1>`);
         $("body").append('<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>');
         $("head").append(headhtml);
         $("body").append(htmlString);
+        listeners()
     }
 }
 
@@ -69,17 +57,18 @@ function isShort(html) {
     return count < 12;
 }
 
-function prune(html) { //TODO: see top list
-    let count = 0;
+function prune(html) {
+    html.find(".reference").remove();
     html.find("table[class*='ambox']").remove();
     html.find("div[class*='asbox']").remove();
     html.find("span[class*='editsection']").remove();
     html.find("span[class*='toctogglespan']").remove();
-    html.find('h2').children().find('#See_also').nextAll().each(() => console.log(++count));
-    html.find('h2').children().find('#Notes').nextAll().each(() => console.log(++count));
-    html.find('h2').children().find('#References').nextAll().each(() => console.log(++count));
-    html.find('h2').children().find('#Further_reading').nextAll().each(() => console.log(++count));
-    html.find('h2').children().find('#External_links').nextAll().each(() => console.log(++count));
+    html.find('h2 span#See_also').parent().nextAll().remove().end().remove();
+    html.find('h2 span#Notes').parent().nextAll().remove().end().remove();
+    html.find('h2 span#References').parent().nextAll().remove().end().remove();
+    html.find('h2 span#Further_reading').parent().nextAll().remove().end().remove();
+    html.find('h2 span#External_links').parent().nextAll().remove().end().remove();
+    html.find('h2 span#Bibliography').parent().nextAll().remove().end().remove();
     return html;
 }
 
@@ -93,6 +82,30 @@ function loadScript(url) {
     })
 }
 
+function listeners() {
+    $('a:not([href*="/wiki/"])').click(function(e) {
+        e.preventDefault();
+        if($(this).attr('href').indexOf('#') === 0) {
+            $(this).unbind('click').click();
+        }
+    });
+    $('a[href*="/wiki/"]').click(function(e) {//TODO: make preventDefault work
+        e.preventDefault();
+        let page = $(this).attr('href').substring(6);
+        let url = "https://en.wikipedia.org/w/api.php?" +
+            new URLSearchParams({
+                action: "parse",
+                page: page,
+                format: "json",
+                prop: "text|headhtml",
+            });
+        $('h1#firstHeading').remove();
+        $('div#siteSub').remove();
+        $('div.mw-parser-output').remove();
+        loadScript(url + '&callback=parser');
+    });
+}
+
 loadScript(apiEndpoint + "?" + params + "&callback=rand")
     .then(function(script) {//wait for first script to load
         let url = "https://en.wikipedia.org/w/api.php?" +
@@ -103,6 +116,4 @@ loadScript(apiEndpoint + "?" + params + "&callback=rand")
                 prop: "text|headhtml",
             });
         return loadScript(url + '&callback=parser');
-    })
-
-
+    });
