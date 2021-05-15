@@ -5,14 +5,19 @@ document.head.appendChild(styles);
 
 let randPage = 'Main Page';
 let apiEndpoint = "https://en.wikipedia.org/w/api.php";
-let params = "action=query&list=random&rnlimit=10&rnnamespace=0&format=json";
+let params = "action=query&list=random&rnlimit=11&rnnamespace=0&format=json";
 let randResp = ['penis muncher', 'beans', 'lmao'];
 let randIndex = 0;
+
 let isFirst = true;
+let clicks = 0;
+let time = 0;
+let destination;
 
 let rand = function(response) {
     randPage = response.query.random[0].title;
     randResp = response.query.random;
+    destination = response.query.random[10].title;
     randIndex++;
 }
 
@@ -23,6 +28,9 @@ let parser = function(response) {
     if(isShort(htmlString) && isFirst) {
         randPage = randResp[randIndex].title;
         console.log(randPage);
+        if(randIndex === 9) {
+            throw new Error('Random page limit reached. Something has probably gone wrong.')
+        }
         randIndex++;
         let url = "https://en.wikipedia.org/w/api.php?" +
             new URLSearchParams({
@@ -34,10 +42,10 @@ let parser = function(response) {
         loadScript(url + "&callback=parser");
     } else {
         isFirst = false;
-        $("body").append(`<h1 id="firstHeading" class="firstHeading">${response.parse.title}</h1>`);
-        $("body").append('<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>');
+        $("#cpage").text(response.parse.title)
+        $(".wikipage").append(`<h1 id="firstHeading" class="firstHeading">${response.parse.title}</h1>
+                               <div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>`).append(htmlString).append('<span class="spacer"></span>');
         $("head").append(headhtml);
-        $("body").append(htmlString);
         listeners()
     }
 }
@@ -91,6 +99,7 @@ function listeners() {
     });
     $('a[href*="/wiki/"]').click(function(e) {
         e.preventDefault();
+        $("#clicker").text(++clicks);
         let page = $(this).attr('href').substring(6);
         let url = "https://en.wikipedia.org/w/api.php?" +
             new URLSearchParams({
@@ -107,6 +116,23 @@ function listeners() {
 }
 
 loadScript(apiEndpoint + "?" + params + "&callback=rand")
+    .then(function(script) {
+        $("#dpage").text(destination);//add destination page to bar
+        let mins = 0;
+        let secs = 0;
+        let minsString = "00";
+        let secsString = "00";//initialize timer
+        setInterval(() => {
+            if(secs === 60) {
+                mins++;
+                secs = 0;
+            }
+            minsString = (mins < 10) ? "0" + mins : secs;
+            secsString = (secs < 10) ? "0" + secs : secs;
+            $("#time").text(minsString + ":" + secsString);
+            secs++;
+        }, 1000);
+    })
     .then(function(script) {//wait for first script to load
         let url = "https://en.wikipedia.org/w/api.php?" +
             new URLSearchParams({
