@@ -109,3 +109,21 @@
 #info-logo:hover ~#txt-4{
     opacity: 1;
 }
+.rules{
+    margin-top: 2vh;
+    padding: 2vw;
+    font-family: "roboto", sans-serif;
+    color: black;
+}
+h2.rules{
+    padding: 0;
+    font-size: 2em;
+}
+.rule-text{
+    padding: 0;
+    font-size: 1em;
+    margin-left: 2vw;
+    margin-top: 1.5vh;
+    line-height: 150%;
+    color: #7d7d7d;
+}
