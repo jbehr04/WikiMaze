@@ -13,6 +13,7 @@ let isFirst = true;
 let clicks = 0;
 let time = 0;
 let destination;
+let previous;
 
 let rand = function(response) {
     randPage = response.query.random[0].title;
@@ -22,8 +23,18 @@ let rand = function(response) {
 }
 
 let parser = function(response) {
-    let htmlString = $($.parseHTML(response.parse.text['*']));
-    let headhtml = $($.parseHTML(based(response.parse.headhtml['*'])));
+    let htmlString, headhtml;
+    try {
+        htmlString = $($.parseHTML(response.parse.text['*']));
+        headhtml = $($.parseHTML(based(response.parse.headhtml['*'])));
+        previous = response.parse;
+    }
+    catch(e) {
+        console.log(e);
+        alert('Error loading page. Returning to previous.');
+        htmlString = $($.parseHTML(previous.text['*']));
+        headhtml = $($.parseHTML(based(previous.headhtml['*'])));
+    }
     htmlString = prune(htmlString);
     if(isShort(htmlString) && isFirst) {
         randPage = randResp[randIndex].title;
@@ -74,6 +85,7 @@ function prune(html) {
     html.find("div[class*='asbox']").remove();
     html.find("span[class*='editsection']").remove();
     html.find("span[class*='toctogglespan']").remove();
+    html.find("div[id*='toc']").remove();
     html.find('h2 span#See_also').parent().nextAll().remove().end().remove();
     html.find('h2 span#Notes').parent().nextAll().remove().end().remove();
     html.find('h2 span#References').parent().nextAll().remove().end().remove();
