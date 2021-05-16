@@ -5,6 +5,7 @@
     <title>WikiMaze- Classic</title>
     <link rel="icon" href="../images/maze.svg" type="image/svg">
     <link rel="stylesheet" href="../css/Navigation%20Bar.css" type="text/css">
+    <link rel="stylesheet" href="../css/game.css" type="text/css">
     <link rel="stylesheet" href="../css/Mode%20Boxes.css" type="text/css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
@@ -13,7 +14,7 @@
 <body>
 <div class="navbar">
     <div class="WikiMaze-logo">
-        <a class="logo-link" href="index.html">
+        <a class="logo-link" href="../index.html">
             <svg id="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 54">
                 <text transform="translate(66 41)" font-size="42" font-family="TimesNewRomanPS-BoldMT, Times New Roman" font-weight="700">
                     <tspan x="0" y="0">WikiMaze</tspan>
@@ -23,18 +24,38 @@
         </a>
     </div>
     <div class="links">
-        <div class="nav-container"><a class="nav-links" href="classic.html">Classic</a></div>
-        <div class="nav-container"><a class="nav-links" href="clicks.html">5 Clicks</a></div>
-        <div class="nav-container"><a class="nav-links" href="timed.html">Timed</a></div>
-        <div class="nav-container"><a class="nav-links" href="battle.html">Battle</a></div>
+        <div class="nav-container"><a class="nav-links" href="/classic">Classic</a></div>
+        <div class="nav-container"><a class="nav-links" href="/clicks">5 Clicks</a></div>
+        <div class="nav-container"><a class="nav-links" href="/timed">Timed</a></div>
+        <div class="nav-container"><a class="nav-links" href="/battle">Battle</a></div>
     </div>
     <button class="signup" id="btn-signup">Sign Up</button>
     <div class="btn-space"></div>
     <button class="login" id="btn-login">Log In</button>
 </div>
-<div style="text-align: center; padding-top: 30vh;">
-    <h2 style='font-family: "acumin-pro", sans-serif; font-size: 2em; color: black;'>Under Construction!</h2>
-    <p style='font-family: "acumin-pro", sans-serif; font-size: 1em; color: black;'>Sorry, I haven't been able to implement this yet. I hopefully will have it up soon! In the meantime use the links at the top to navigate away.</p>
+<div class="outsidebar">
+    <h2 class="head top">Current Page: </h2>
+    <p id="cpage">Loading...</p>
+    <h2 class="head">Destination Page: </h2>
+    <p id="dpage">Loading...</p>
+    <h2 class="head">Timer: </h2>
+    <p id="time">00:00</p>
+    <h2 class="head">Clicks:</h2>
+    <p id="clicker">0</p>
 </div>
+<div class="wikipage"></div>
+<div class="overlay">
+    <div class="winbox">
+        <h2>You Won!</h2>
+        <h1>Final time: </h1>
+        <p id="timer">00:00</p>
+        <h1>Clicks: </h1>
+        <p id="clicks">tttttt</p>
+        <a href="index.html" id="replay">Play Again?</a>
+        <a href="../index.html" id="home">Home</a>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
+<script src="../JavaScript/getPage.js"></script>
 </body>
 </html>
