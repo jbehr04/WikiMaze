@@ -46,7 +46,10 @@ let parser = function(response) {
         $(".wikipage").append(`<h1 id="firstHeading" class="firstHeading">${response.parse.title}</h1>
                                <div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>`).append(htmlString).append('<span class="spacer"></span>');
         $("head").append(headhtml);
-        listeners()
+        listeners();
+        if(response.parse.title === destination) {
+            $(".overlay").css('visibility', 'visible')
+        }
     }
 }
 
@@ -80,6 +83,21 @@ function prune(html) {
     return html;
 }
 
+function win() {
+    let url = "https://en.wikipedia.org/w/api.php?" +
+        new URLSearchParams({
+            action: "parse",
+            page: destination,
+            format: "json",
+            prop: "text|headhtml",
+        });
+    $('h1#firstHeading').remove();
+    $('div#siteSub').remove();
+    $('div.mw-parser-output').remove();
+    $('.spacer').remove();
+    loadScript(url + '&callback=parser');
+}
+
 function loadScript(url) {
     return new Promise(function(resolve, reject) {
         let script = document.createElement("script"); // Dynamically create a "script" tag
@@ -91,7 +109,7 @@ function loadScript(url) {
 }
 
 function listeners() {
-    $('a:not([href*="/wiki/"])').click(function(e) {
+    $('.wikipage').find('a:not([href*="/wiki/"])').click(function(e) {
         e.preventDefault();
         if($(this).attr('href').indexOf('#') === 0) {
             $(this).unbind('click').click();
@@ -111,6 +129,7 @@ function listeners() {
         $('h1#firstHeading').remove();
         $('div#siteSub').remove();
         $('div.mw-parser-output').remove();
+        $('.spacer').remove();
         loadScript(url + '&callback=parser');
     });
 }

@@ -1,6 +1,70 @@
 html body {
     overflow: hidden;
 }
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.8);
+    z-index: 2;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.overlay h2 {
+    border-bottom: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 4em;
+    color: black;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 0.1em;
+}
+.overlay h1 {
+    border-bottom: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 2em;
+    color: black;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+.overlay p {
+    border-bottom: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 2em;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.overlay a {
+    text-decoration: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 2em;
+    color: black;
+    margin-top: 1vh;
+    z-index: 3;
+}
+.overlay a:visited{
+    text-decoration: none;
+    font-family: "acumin-pro", sans-serif;
+    font-size: 2em;
+    color: black;
+    margin-top: 1vh;
+    z-index: 3;
+}
+.winbox {
+    display: inline-block;
+    width: 50vw;
+    height: 50vh;
+    background: azure;
+    border-radius: 15px;
+    text-align: center;
+}
 .outsidebar {
     text-align: center;
     width: 9vw;
@@ -39,4 +103,14 @@ html body {
 }
 .WikiMaze-logo {
     border-right: none;
+}
+#replay {
+    display: inline-block;
+    float: left;
+    margin-left: 7vw;
+}
+#home {
+    display: inline-block;
+    float: right;
+    margin-right: 10vw;
 }
